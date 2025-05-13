@@ -76,30 +76,6 @@ def extract_links_from_pdf(
             yield [link["uri"] for link in page.get_links()]
 
 
-def build_scrapbox_repr(
-    gyazo_urls: list[str],
-    expand: bool,
-    n_spaces: int,
-    links: Iterable[Iterable[str]] | None = None,
-) -> str:
-    if links is None:
-        links = [[]] * len(gyazo_urls)
-
-    blocks = []
-    for gyazo_url, links_per_page in zip(gyazo_urls, links):
-        block = []
-        if expand:
-            block.append(f"> [[{gyazo_url}]]\n")
-        else:
-            block.append(f"> [{gyazo_url}]\n")
-        for link in links_per_page:
-            block.append(f" {link}\n")
-        block.append("\n" * n_spaces)
-        blocks.append("".join(block))
-
-    return "".join(blocks)
-
-
 def download_pdf(url: str) -> str:
     """Return a path to the PDF file downloaded from `url`."""
     resp = urlopen(url)
